@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageToBase64 from '../utility/imageToBase64';
 
+
 const Signup = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +26,7 @@ const Signup = () => {
         confirmPassword: ""
     });
     // eslint-disable-next-line no-lone-blocks
-    {/*console.log(data);*/}
+    console.log(data);
     const handleOnChange = (e) => {
         const {name, value} = e.target;
         setData((prev) => {
@@ -40,7 +41,7 @@ const Signup = () => {
         {/*console.log(e.target.files[0]);*/}
         const data = await ImageToBase64(e.target.files[0]);
         // eslint-disable-next-line no-lone-blocks
-        {/*console.log(data);*/}
+        console.log(data);
         setData((prev) => {
             return {
                 ...prev,
@@ -48,24 +49,40 @@ const Signup = () => {
             }
         });
     }
-    const handleSubmit = (e) => {
+    console.log(process.env.REACT_APP_SERVER_DOMAIN);
+    const handleSubmit = async(e) => {
         e.preventDefault();
         const {firstName,email,password,confirmPassword} = data;
         if(firstName && email && password && confirmPassword) {
             if(password === confirmPassword) {
-                toast.success("Registration successful",{
-                    position: toast.POSITION.TOP_CENTER
+                const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/signup`,{
+                    method: "POST",
+                    headers: {
+                        "content-type" : "application/json"
+                    },
+                    body: JSON.stringify(data)
                 });
-                setTimeout(() => {
-                    navigate("/login");
-                }, 7000);
+                const dataRes = await fetchData.json();
+                console.log(dataRes);
+                if(dataRes.message ==="Email already registered"){
+                    toast.warning(dataRes.message,{
+                        position: toast.POSITION.TOP_RIGHT
+                    });
+                }else{
+                    toast.success(dataRes.message,{
+                        position: toast.POSITION.TOP_RIGHT
+                    });
+                    setTimeout(() => {
+                        navigate("/login");
+                    }, 7000);
+                }
             }else{
                 toast.error("password and confirm password not equal",{
                     position: toast.POSITION.TOP_CENTER
                 });
             }
         }else{
-            toast.warning("Please enter required fields",{
+            toast.error("Please enter required fields",{
                 position: toast.POSITION.TOP_CENTER
             });
         }

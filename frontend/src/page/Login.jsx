@@ -4,9 +4,13 @@ import { BiShow, BiHide } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRedux } from '../redux/userSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const userData = useSelector(state => state);
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
       setShowPassword(prev => !prev);
@@ -26,20 +30,35 @@ const Login = () => {
         }
       });
     }
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const {email,password} = data;
     if(email && password) {
-      toast.success("Login successful",{
-        position: toast.POSITION.TOP_CENTER
+      const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/login`,{
+        method: "POST",
+        headers: {
+          "content-type" : "application/json"
+        },
+        body: JSON.stringify(data)
       });
-      setTimeout(() => {
-        navigate("/");
-      }, 5000);
-    }else{
-      toast.error("Incorrect email or password",{
-        position: toast.POSITION.TOP_CENTER
-      });
+      const dataRes = await fetchData.json();
+      console.log(dataRes);
+      if(dataRes.message === "Incorrect email id or password") {
+        toast.error(dataRes.message,{
+          position: toast.POSITION.TOP_RIGHT
+        });
+      }else{
+        toast.success(dataRes.message, {
+          position: toast.POSITION.TOP_RIGHT
+        });
+        if(dataRes.alert){
+          dispatch(loginRedux(dataRes));
+          setTimeout(() => {
+            navigate("/");
+          },4000);
+        }
+        console.log(userData);
+      }
     }
   }
   return (
