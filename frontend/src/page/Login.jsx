@@ -45,11 +45,13 @@ const Login = () => {
       console.log(dataRes);
       if(dataRes.message === "Incorrect email id or password") {
         toast.error(dataRes.message,{
-          position: toast.POSITION.TOP_RIGHT
+          position: toast.POSITION.TOP_RIGHT,
+          className: 'toast-style'
         });
       }else{
         toast.success(dataRes.message, {
-          position: toast.POSITION.TOP_RIGHT
+          position: toast.POSITION.TOP_RIGHT,
+          className: 'toast-style'
         });
         if(dataRes.alert){
           dispatch(loginRedux(dataRes));

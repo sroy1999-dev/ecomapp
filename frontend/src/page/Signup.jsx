@@ -66,11 +66,13 @@ const Signup = () => {
                 console.log(dataRes);
                 if(dataRes.message ==="Email already registered"){
                     toast.warning(dataRes.message,{
-                        position: toast.POSITION.TOP_RIGHT
+                        position: toast.POSITION.TOP_RIGHT,
+                        className: 'toast-style'
                     });
                 }else{
                     toast.success(dataRes.message,{
-                        position: toast.POSITION.TOP_RIGHT
+                        position: toast.POSITION.TOP_RIGHT,
+                        className: 'toast-style'
                     });
                     setTimeout(() => {
                         navigate("/login");
@@ -78,12 +80,14 @@ const Signup = () => {
                 }
             }else{
                 toast.error("password and confirm password not equal",{
-                    position: toast.POSITION.TOP_CENTER
+                    position: toast.POSITION.TOP_CENTER,
+                    className: 'toast-style'
                 });
             }
         }else{
             toast.error("Please enter required fields",{
-                position: toast.POSITION.TOP_CENTER
+                position: toast.POSITION.TOP_CENTER,
+                className: 'toast-style'
             });
         }
     }

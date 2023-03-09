@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URL).then(() => {
     throw err;
 });
 
-//schema
+//user schema
 const userSchema = new mongoose.Schema({
     image: String,
     firstName: String,
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     confirmPassword: String
 });
 
-//model
+//user model
 const userModel = mongoose.model('user', userSchema);
 
 //API
@@ -45,8 +45,8 @@ app.post("/signup", async(req, res) => {
     if(result){
         res.send({message: "Email already registered", alert: false});
     }else{
-        const data = userModel(req.body)
-        data.save();
+        const data = new userModel(req.body)
+        await data.save();
         res.send({message : "Successfully signup", alert: true});
     }
 });
@@ -69,6 +69,26 @@ app.post("/login", async(req, res) => {
     }else{
         res.send({message: "Incorrect email id or password", alert: false});
     }
+});
+
+//product schema
+const productSchema = new mongoose.Schema({
+    name: String,
+    category: String,
+    image: String,
+    price: Number,
+    description: String
+});
+
+//product model
+const productModel = mongoose.model('product', productSchema);
+
+//save product in database API
+app.post("/upload", async(req, res) => {
+    console.log(req.body);
+    const data = new productModel(req.body);
+    await data.save();
+    res.send({message: "Uploaded successfully", alert: true});
 });
 
 const port = process.env.PORT || 8080;
