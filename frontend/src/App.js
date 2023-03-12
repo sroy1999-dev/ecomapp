@@ -7,7 +7,7 @@ import { setDataProduct } from './redux/productSlice';
 
 const App = () => {
   const dispatch = useDispatch();
-  const productData = useSelector((state) => state.product);
+  useSelector((state) => state.product);
   useEffect(() => {
     (async() => {
       const res = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/product`); 
@@ -17,7 +17,6 @@ const App = () => {
     })()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
-  console.log(productData);
   return (
     <div>
       <Header />
