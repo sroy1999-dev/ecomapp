@@ -22,6 +22,7 @@ const Header = () => {
         className: 'toast-style'
     }), 2000);
   }
+  console.log(process.env.REACT_APP_ADMIN_EMAIL);
   return (
     <header className='fixed shadow-md w-full h-16 px-2 md:px-4 z-50 bg-white'>
         {/* desktop */}
@@ -51,10 +52,13 @@ const Header = () => {
                     </div>
                     {
                         showMenu && 
-                        (<div className='absolute right-2 bg-white py-2 shadow drop-shadow-md flex flex-col justify-center items-center'>
-                            <Link to={"newproduct"} className='whitespace-nowrap cursor-pointer px-2'>New Product</Link>
+                        (<div className='absolute right-2 bg-white py-3 h-5 top-16 shadow drop-shadow-md flex flex-col justify-center items-center'>
                             {
-                                userData.image ? <p className='cursor-pointer text-white bg-red-500 px-2' onClick={handleLogout}>Logout</p> : <Link to={"login"} className='whitespace-nowrap cursor-pointer px-2'>Login</Link>
+                                userData.email === process.env.REACT_APP_ADMIN_EMAIL &&
+                                <Link to={"newproduct"} className='whitespace-nowrap cursor-pointer px-2'>New Product</Link>
+                            }
+                            {
+                                userData.image ? <p className='cursor-pointer text-white bg-red-500 px-2' onClick={handleLogout}>Logout ({userData.firstName})</p> : <Link to={"login"} className='whitespace-nowrap cursor-pointer px-2'>Login</Link>
                             }
                         </div>)
                     }

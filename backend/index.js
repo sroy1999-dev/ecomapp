@@ -91,6 +91,12 @@ app.post("/upload", async(req, res) => {
     res.send({message: "Uploaded successfully", alert: true});
 });
 
+//fetch products from the db
+app.get("/product", async(req, res) => {
+    const data = await productModel.find({});
+    res.send(JSON.stringify(data));
+});
+
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
