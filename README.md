@@ -3,7 +3,7 @@ No travel is required
 Fastest deliveru to your doorstep
 
 
-#For frontend
+# For frontend
   1. React Js
   2. Redux
   3. Tailwind css
@@ -11,5 +11,5 @@ Fastest deliveru to your doorstep
 # For backend
   1. Node Js
 
-#database used
+# Database used
   1. MongoDB Atlas
