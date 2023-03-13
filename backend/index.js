@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     password: String,
-    confirmPassword: String
+    confirmPassword: String,
+    createdOn:Date
 });
 
 //user model
@@ -45,7 +46,15 @@ app.post("/signup", async(req, res) => {
     if(result){
         res.send({message: "Email already registered", alert: false});
     }else{
-        const data = new userModel(req.body)
+        const data = new userModel({
+            image:req.body.image,
+            firstName:req.body.firstName,
+            lastName:req.body.lastName,
+            email:req.body.email,
+            password:req.body.password,
+            confirmPassword:req.body.confirmPassword,
+            createdOn:new Date()
+        })
         await data.save();
         res.send({message : "Successfully signup", alert: true});
     }
