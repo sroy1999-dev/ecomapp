@@ -2,12 +2,21 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AllProduct from '../components/AllProduct';
+import { addCartItem } from '../redux/productSlice';
+import { useDispatch } from 'react-redux';
 
 const Menu = () => {
   const {filterby} = useParams();
   const productData = useSelector(state => state.product.productList);
   const productDisplay = productData.filter(el => el._id === filterby)[0];
   console.log(productDisplay);
+
+  const dispatch = useDispatch();
+  const handleAddTocart = (e) => {
+    e.stopPropagation();
+    dispatch(addCartItem(productDisplay));
+  };
+
   return (
     <div className='p-2 md:p-4'>
       <div className='w-full max-w-4xl m-auto md:flex bg-white'>
@@ -20,7 +29,7 @@ const Menu = () => {
           <p className='font-bold md:text-2xl'><span className='text-red-500'>₹</span> <span>{productDisplay.price}</span></p>
           <div className='flex gap-3'>
             <button className='bg-yellow-500 py-1 mt-2 rounded hover:bg-yellow-600 min-w-[100px]'>Buy</button>
-            <button className='bg-yellow-500 py-1 mt-2 rounded hover:bg-yellow-600 min-w-[100px]'>Add to cart</button>
+            <button className='bg-yellow-500 py-1 mt-2 rounded hover:bg-yellow-600 min-w-[100px]' onClick={handleAddTocart}>Add to cart</button>
           </div>
           <div>
             <p className='text-slate-600 font-medium'>Description:</p>
