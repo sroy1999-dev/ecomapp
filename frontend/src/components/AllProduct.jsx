@@ -12,6 +12,7 @@ const AllProduct = ({heading}) => {
   
   // eslint-disable-next-line no-lone-blocks
   {/* filter data display */}
+  const [filterBy, setFilterBy] = useState("");
   const [dataFilter, setDataFilter] = useState([]);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const AllProduct = ({heading}) => {
   }, [productData])
 
   const handleFilterProduct = (category) => {
+    setFilterBy(category);
     const filter = productData.filter(el => el.category.toLowerCase() === category.toLowerCase());
     setDataFilter(() => {
       return [
@@ -34,7 +36,12 @@ const AllProduct = ({heading}) => {
           {
             categoryList[0] ? categoryList.map((el, index) => {
               return (
-                <FilterProduct key={index} category={el} onClick={() => {handleFilterProduct(el)}} />
+                <FilterProduct
+                  key={index} 
+                  isActive={el}
+                  category={el.toLowerCase()  === filterBy.toLowerCase()} 
+                  onClick={() => {handleFilterProduct(el)}} 
+                />
               )
             }) : (
               <div className='min-h-[150px] flex justify-center items-center'>
